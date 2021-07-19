@@ -21,7 +21,7 @@ def hello_world():
     # print(mogodb.Table_Branch())
 
     merge_df = pd.concat([branch_data], join="inner", axis=1)
-    merge_df.index = merge_df.index.astype(str).format() #fefgetge
+    merge_df.index = merge_df.index.astype(str).format() #31344
 
 
     return render_template("startbootstrap-sb-admin-2-gh-pages/index.html" ,data =json.dumps(merge_df.to_dict()))
