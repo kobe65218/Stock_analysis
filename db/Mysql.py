@@ -22,6 +22,17 @@ class Mysql(object):
         df = df.astype(float)
         return df
 
+    def Merge(self):
+        annony = Table("predict" ,self.metadata, autoload_with=self.mysql)
+        annony = annony.select().where(annony.c.stock_id == "2330")
+        data = self.mysql.execute(annony)
+        df = pd.DataFrame(data.all(), columns=annony.columns.keys())
+        df.index = df["date"].astype(str)
+        df.drop(["date","stock_id"] , axis=1 , inplace=True)
+
+        return df
+
+
 
 
 

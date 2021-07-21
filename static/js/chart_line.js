@@ -1,6 +1,7 @@
-// Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
+var canvas = document.getElementById("myAreaChart");
+var ctx = canvas.getContext("2d");
 
 function number_format(number, decimals, dec_point, thousands_sep) {
   // *     example: number_format(1234.56, 2, ',', ' ');
@@ -27,61 +28,56 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
-// Area Chart Example
-
 // var data = {{ data | safe }}
 
-console.log(data)
+// console.log(data)
+close = data["Close"]
+time = Object.keys(close)
 
-var canvas = document.getElementById("myAreaChart");
-//
-var ctx = canvas.getContext("2d");
-// var data = [[0, 20], [50, 30], [100, 50], [200, 60], [300, 90]];
-// var lineGenerator = d3.svg.line();
-// var pathString = lineGenerator(data);
-// console.log(pathString)
-// var p = new Path2D(pathString)
-// console.log(p)
-// ctx.fill(p)
-// d3.select('path').attr('d', pathString);
+console.log(close)
+closePrice = []
+time.forEach( t => closePrice.push(close[t]))
 
+color = []
+annomy = data["annomy"]
+annomyTime = Object.keys(annomy)
 
-console.log(data)
+annomyPoint = []
+pointRadius = []
+normalColor = "rgba(78, 115, 223, 1)"
+annomyColor = "rgb(238,11,11)"
+
+annomyTime.forEach( t => {
+  if (annomy[t] == 1 ){
+    annomyPoint.push(annomyColor)
+    pointRadius.push(3)
+  }else {
+    annomyPoint.push(normalColor)
+    pointRadius.push(1)
+  }
+
+  })
 
 
 
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: time,
     datasets: [{
-      label: "Earnings",
+      label: "CLose price",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: pointRadius,
+      pointBackgroundColor: annomyPoint,
+      pointBorderColor: annomyPoint,
       pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverBackgroundColor: annomyPoint,
+      pointHoverBorderColor: annomyPoint,
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0,1000,555,2000,300],
-    },{
-      label: "Earnings",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: ["rgba(78, 115, 223, 1)","rgb(226,11,24)"],
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: [0,10],
+      data: closePrice,
     }],
   },
   options: {
@@ -126,7 +122,18 @@ var myLineChart = new Chart(ctx, {
       }],
     },
     legend: {
-      display: false
+      display: true,
+      align :"end",
+      color: 'rgb(255, 99, 132)',
+      title: {
+         display:true,
+         text:"tesyt",
+         borderRadius: 2,
+
+
+              color: 'rgb(255, 99, 132)'
+                }
+
     },
     tooltips: {
       backgroundColor: "rgb(255,255,255)",
@@ -145,14 +152,20 @@ var myLineChart = new Chart(ctx, {
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+          point = chart.datasets[tooltipItem.datasetIndex].pointRadius[tooltipItem.index]
+          if (point == 3){
+
+            return datasetLabel + ': $' + number_format(tooltipItem.yLabel)  + " annnomy: True" ;
+
+          }else{
+
+             return datasetLabel + ': $' + number_format(tooltipItem.yLabel)  + " annnomy:False " ;
+          }
+          // var annomy = chart.dataIndex.pointRadius || '';
+
+
         }
       }
     }
   }
 });
-
-
-//
-//
-
