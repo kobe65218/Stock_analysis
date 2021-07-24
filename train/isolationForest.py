@@ -4,62 +4,91 @@ import os
 from  sklearn.ensemble import IsolationForest
 import requests
 import json
-
-
-## 透過API讀取資料庫爬取的資料
-df = requests.get("http://127.0.0.1:5000/branchApi")
-print(df)
-#%%
-data = pd.DataFrame(json.loads(df.text))
-
-
-
-## DROP掉股價資訊保留三大法人及分點進出資料
-data["Close_log"] = data["Close"].shift(1)
-data["Close_log"] = (data["Close_log"] - data["Close"])/data["Close"]
-dd = data[["Open","High","Low","Close","Volume","Dividends","Stock Splits","stock_id","Close_log"]]
-data.drop(["Open","High","Low","Close","Volume","Dividends","Stock Splits","stock_id","Close_log"],axis=1, inplace=True)
-data.fillna(0,inplace=True)
-
-## 測試三種異常
-"""
-1. 三大法人(bid3_data)
-2. 分點進出(branch_data)
-3. 三大法人+分點進出(data)
-"""
-
-big3_data = data[['三大法人買賣超股數', '外資自營商買賣超股數', '外資自營商買進股數', '外資自營商賣出股數',
-       '外資買賣超股數', '外資買進股數', '外資賣出股數', '外陸資買賣超股數(不含外資自營商)', '外陸資買進股數(不含外資自營商)',
-       '外陸資賣出股數(不含外資自營商)', '投信買賣超股數', '投信買進股數', '投信賣出股數', '自營商買賣超股數',
-       '自營商買賣超股數(自行買賣)', '自營商買賣超股數(避險)', '自營商買進股數', '自營商買進股數(自行買賣)',
-       '自營商買進股數(避險)', '自營商賣出股數', '自營商賣出股數(自行買賣)', '自營商賣出股數(避險)']]
-
-branch_data = data.drop(['三大法人買賣超股數', '外資自營商買賣超股數', '外資自營商買進股數', '外資自營商賣出股數',
-       '外資買賣超股數', '外資買進股數', '外資賣出股數', '外陸資買賣超股數(不含外資自營商)', '外陸資買進股數(不含外資自營商)',
-       '外陸資賣出股數(不含外資自營商)', '投信買賣超股數', '投信買進股數', '投信賣出股數', '自營商買賣超股數',
-       '自營商買賣超股數(自行買賣)', '自營商買賣超股數(避險)', '自營商買進股數', '自營商買進股數(自行買賣)',
-       '自營商買進股數(避險)', '自營商賣出股數', '自營商賣出股數(自行買賣)', '自營商賣出股數(避險)'],axis = 1)
-
-
-model_big_3 = IsolationForest(contamination= 0.2 , max_samples="auto",
-                        max_features=len(big3_data.columns),n_estimators=1000,
-                        n_jobs=-1,bootstrap=False
-                        )
-
-#%%
-
-pred_big_3  = model_big_3.fit_predict(big3_data)
-data = pd.DataFrame(pred_big_3  ,index=dd["stock_id"] , columns=["annomy"])
-data["annomy"] = data["annomy"].replace({1:0, -1:1})
-data["date"] = dd.index
-print(data)
-
-#%%
-from sqlalchemy import create_engine , Table , MetaData
+import pickle
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine , Table , MetaData , Column
 from sqlalchemy.types import VARCHAR, Date , INTEGER
-mysql = create_engine("mysql+pymysql://root:kobe910018@192.168.31.20:3306/stock_analysis")
-data.to_sql("predict" , mysql ,if_exists='replace', index_label='stock_id',
-         dtype={'stock_id':VARCHAR(10) , "date" : Date , "annomy" :INTEGER })
+import pymongo
 
-# metadata = MetaData(bind=mysql)
-# pred = Table("pred" ,)
+# stock_id = pd.read_csv("/home/kobe/PycharmProjects/flaskProject/data/stock_id.csv")
+# print(stock_id)
+
+
+stock_ids = ["2330" ,"2603","2609","3481","2303","2409","2317","2002"]
+
+
+
+for stock_id in stock_ids:
+    ## 透過API讀取資料庫爬取的資料
+    df = requests.get(f"http://127.0.0.1:5000/branchApi/{stock_id}")
+    data_from_api = pd.DataFrame(json.loads(df.text))
+    print(data_from_api)
+    data_from_api.drop(["stock_id", "證券名稱"],
+              axis=1, inplace=True)
+    data_from_api.replace("None" , np.nan ,inplace=True)
+    data_from_api.dropna(inplace=True)
+
+
+
+    big3_data = data_from_api[["外資買進股數", "外資賣出股數", "投信買進股數", "投信賣出股數", "自營商買進股數", "自營商賣出股數"]]
+    big3_data = big3_data.astype(float)
+    # 訓練模型
+    model_big_3 = IsolationForest(contamination=0.1, max_samples="auto",
+                                  max_features=len(big3_data.columns), n_estimators=1000,
+                                  n_jobs=-1, bootstrap=False
+                                  )
+    pred_big_3 = model_big_3.fit_predict(big3_data)
+
+
+    # 將預測結果存入資料庫
+    data = pd.DataFrame(pred_big_3, columns=["annomy"])
+    data["annomy"] = data["annomy"].replace({1: 0, -1: 1})
+    data["date"] = data_from_api.index
+    data["stock_id"] = stock_id
+    save_to_db = data.to_numpy()
+
+    Base = declarative_base()
+
+
+    class annomy(Base):
+        __tablename__ = 'predict'
+        stock_id = Column(VARCHAR(10), primary_key=True)
+        annomy = Column(INTEGER)
+        date = Column(Date, primary_key=True)
+
+
+    engine = create_engine("mysql+pymysql://root:kobe910018@192.168.31.20:3306/stock_analysis")
+    Base.metadata.create_all(engine)
+    session = Session(bind=engine)
+
+    with session:
+        for data in save_to_db:
+            need_to_save = annomy(annomy=data[0], date=data[1], stock_id=data[2])
+            session.add(need_to_save)
+        session.commit()
+
+
+    # 將模型存入mongodb
+    def save_to_mongodb(model, client, db, coll, stock_id):
+        need_save_model = pickle.dumps(model)
+        client = pymongo.MongoClient(client)
+        database = client[db]
+        collect = database[coll]
+        collect.insert_one({"stock_id": stock_id, "model": need_save_model})
+
+
+    save_to_mongodb(model_big_3, "mongodb://kobe:kobe910018@localhost:27017/", "stock_analysis", "model", stock_id)
+
+
+
+
+
+
+
+
+
+
+
+
+

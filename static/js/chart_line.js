@@ -31,34 +31,33 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 // var data = {{ data | safe }}
 
 // console.log(data)
-close = data["Close"]
-time = Object.keys(close)
-
-console.log(close)
-closePrice = []
-time.forEach( t => closePrice.push(close[t]))
-
-color = []
-annomy = data["annomy"]
-annomyTime = Object.keys(annomy)
-
-annomyPoint = []
-pointRadius = []
-normalColor = "rgba(78, 115, 223, 1)"
-annomyColor = "rgb(238,11,11)"
-
-annomyTime.forEach( t => {
-  if (annomy[t] == 1 ){
-    annomyPoint.push(annomyColor)
-    pointRadius.push(3)
-  }else {
-    annomyPoint.push(normalColor)
-    pointRadius.push(1)
-  }
-
-  })
 
 
+  var close = data["Close"]
+  console.log(close)
+  var time = Object.keys(close)
+  var closePrice = []
+  time.forEach( t => closePrice.push(close[t]))
+
+  var color = []
+  var annomy = data["annomy"]
+  var annomyTime = Object.keys(annomy)
+
+  var annomyPoint = []
+  var pointRadius = []
+  var normalColor = "rgba(78, 115, 223, 1)"
+  var annomyColor = "rgb(238,11,11)"
+
+  annomyTime.forEach( t => {
+    if (annomy[t] == 1 ){
+      annomyPoint.push(annomyColor)
+      pointRadius.push(3)
+    }else {
+      annomyPoint.push(normalColor)
+      pointRadius.push(1)
+    }
+
+    })
 
 var myLineChart = new Chart(ctx, {
   type: 'line',
@@ -169,3 +168,8 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+
+
+
+
