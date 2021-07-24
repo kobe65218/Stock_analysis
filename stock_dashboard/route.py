@@ -1,55 +1,9 @@
-from flask import Flask , url_for , render_template , request
-from flask_sqlalchemy import  SQLAlchemy
+from stock_dashboard import app , db
+from flask import render_template , request
 import pandas as pd
 import yfinance as yf
 import json
-# from db.test import TableBig3 ,db
-from sqlalchemy import func
-from sqlalchemy.sql.expression import cast
-from flask_cors import CORS
-
-app = Flask(__name__)
-CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:kobe910018@192.168.31.20:3306/stock_analysis"
-db = SQLAlchemy(app)
-# 三大法人Table
-class TableBig3(db.Model):
-    __tablename__ = 'big3'
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'stock_analysis',
-        'autoload_with': db.engine
-    }
-    def get_dict(self):
-        columns = self.__dict__.keys()
-        return { str(col) : getattr(self, col) for col in list(columns)[1:]}
-
-
-# 異常偵測 Table
-class TablePredict(db.Model):
-    __tablename__ = 'predict'
-    __table_args__ = {
-        'autoload': True,
-        'schema': 'stock_analysis',
-        'autoload_with': db.engine
-    }
-    def get_dict(self):
-        columns = self.__dict__.keys()
-        return { str(col) : getattr(self, col) for col in list(columns)[1:]}
-
-
-def fetch_data(table , stock_id , start_date , end_date):
-    Table_data = db.session.query(table).filter(table.stock_id == stock_id , table.date.between(start_date, end_date) ).all()
-    Table_datas = []
-    for data in Table_data:
-        Table_datas.append(data.get_dict())
-    df = pd.DataFrame(Table_datas)
-    df = df.astype(str)
-    df.replace("0E-10", 0, inplace=True)
-    df.index = df["date"]
-    df.drop(["date"], axis=1, inplace=True)
-    return  df
-
+from stock_dashboard.database import TablePredict , TableBig3 , fetch_data
 
 # 三大法人異常網站
 @app.route("/")
@@ -107,8 +61,3 @@ def branchData(stock_id):
     df.drop(["date","index"], axis=1, inplace=True)
     df.index = df.index.astype(str).format()
     return df.to_dict()
-
-if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0")
-
-

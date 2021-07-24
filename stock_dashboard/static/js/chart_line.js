@@ -156,7 +156,6 @@ var myLineChart = new Chart(ctx, {
                 boxWidth: 80,
                 usePointStyle: true,
                 pointStyle: "circle",
-                color: 'rgb(255, 99, 132)'
             },
             title: {
                 display: true,
