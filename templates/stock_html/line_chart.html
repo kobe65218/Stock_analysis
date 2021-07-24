@@ -1,0 +1,42 @@
+{% extends "stock_html/information_card.html" %}
+
+{% block line_chart%}
+
+<!-- send date-->
+<form>
+    <div class="input-group mb-3 col-xl-8 col-lg-7 row justify-content-start">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">start:</span>
+        </div>
+        <input type="date" class="form-control col-xl-3  col-lg-2 mr-2" value={{ start }} min="2020-04-01"
+               max="2022-04-30" step="1" name="start" id="start">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">end:</span>
+        </div>
+        <input type="date" class="form-control col-xl-3  col-lg-2" value={{ end }} min="2020-04-01" max="2022-04-30"
+               step="1" name="end" id="end">
+        <button type="button" class="input-group-text ml-2" id="dateButton">send</button>
+
+    </div>
+</form>
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Area Chart -->
+    <div class="col-xl-12 col-lg-7">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">三大法人異常點與收盤價</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock line_chart%}

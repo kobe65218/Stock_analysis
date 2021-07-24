@@ -88,7 +88,7 @@ def stock():
     merge_df["Close_log"] = merge_df["Close"].shift(1)
     merge_df["Close_log"] = (merge_df["Close_log"] - merge_df["Close"]) / merge_df["Close"]
 
-    return render_template("index.html", data =json.dumps(merge_df.to_dict()) ,start =start , end = end , stock_id = stock_id)
+    return render_template("stock_html/bar_chart.html", data =json.dumps(merge_df.to_dict()), start =start, end = end, stock_id = stock_id)
 
 # 建立訓練模型時的api
 @app.route('/branchApi/<stock_id>')
