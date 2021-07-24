@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:kobe910018@192.168.31.20:3306/stock_analysis"
 db = SQLAlchemy(app)
-
+#
 class TableBig3(db.Model):
     __tablename__ = 'big3'
     __table_args__ = {
