@@ -39,6 +39,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   var closePrice = []
   time.forEach( t => closePrice.push(close[t]))
 
+
   var color = []
   var annomy = data["annomy"]
   var annomyTime = Object.keys(annomy)
@@ -51,20 +52,22 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   annomyTime.forEach( t => {
     if (annomy[t] == 1 ){
       annomyPoint.push(annomyColor)
-      pointRadius.push(3)
+      pointRadius.push(2)
+
     }else {
       annomyPoint.push(normalColor)
-      pointRadius.push(1)
+      pointRadius.push(0)
     }
 
     })
 
 var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
+
+  data:  {
     labels: time,
     datasets: [{
-      label: "CLose price",
+      type: 'line',
+      label: "收盤價",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
@@ -77,7 +80,15 @@ var myLineChart = new Chart(ctx, {
       pointHitRadius: 10,
       pointBorderWidth: 2,
       data: closePrice,
-    }],
+    },
+      {
+        type: 'scatter',
+        label: "異常點",
+        pointBorderColor:  'rgb(255, 99, 132)',
+        pointBackgroundColor:'rgb(255, 99, 132)'
+
+      }
+    ],
   },
   options: {
     maintainAspectRatio: false,
@@ -123,15 +134,21 @@ var myLineChart = new Chart(ctx, {
     legend: {
       display: true,
       align :"end",
-      color: 'rgb(255, 99, 132)',
-      title: {
-         display:true,
-         text:"tesyt",
-         borderRadius: 2,
+      labels:{
+        boxWidth:80,
+        usePointStyle:true,
+        pointStyle: "circle",
+        color: 'rgb(255, 99, 132)'
+      },
+      title:{
+        display:true,
+        text:"teste"
 
 
-              color: 'rgb(255, 99, 132)'
-                }
+
+
+      }
+
 
     },
     tooltips: {
