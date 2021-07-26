@@ -61,3 +61,29 @@ def branchData(stock_id):
     df.drop(["date","index"], axis=1, inplace=True)
     df.index = df.index.astype(str).format()
     return df.to_dict()
+
+
+# 自動更新時的api
+@app.route('/update/stock_id=<stock_id>&start=<start>&end=<end>')
+def update(stock_id ,start ,end):
+    # 從資料庫取得三大法人資訊
+    Table_data = db.session.query(TableBig3).filter(TableBig3.stock_id == stock_id , TableBig3.date.between(start,end)).all()
+    if Table_data == []:
+        return "None"
+    else:
+        Table_datas = []
+        for data in Table_data:
+            Table_datas.append(data.get_dict())
+
+        print(start)
+        print(end)
+
+        # 資料處理
+        df = pd.DataFrame(Table_datas)
+        df = df.astype(str)
+        df.replace("0E-10", 0, inplace=True)
+        df.index = df["date"]
+        df.drop(["date", "index"], axis=1, inplace=True)
+        df.index = df.index.astype(str).format()
+        return df.to_dict()
+
