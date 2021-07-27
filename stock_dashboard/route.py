@@ -1,3 +1,5 @@
+import datetime
+
 from stock_dashboard import app , db
 from flask import render_template , request
 import pandas as pd
@@ -22,8 +24,8 @@ def stock():
 
     # 設定預設值
     if start == None :
-        start = "2021-04-20"
-        end = "2021-07-20"
+        start = "2020-04-20"
+        end = datetime.date.today() + datetime.timedelta(1)
     if stock_id == None :
        stock_id = "2330"
 

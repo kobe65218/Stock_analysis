@@ -83,8 +83,8 @@ export function barchart(volatility, volatility_average, volatility_date) {
                 yAxes: [{
                     ticks: {
                         min: 0,
-                        max: Math.max(...volatility).toFixed(0),
-                        maxTicksLimit: 5,
+                        max: (Math.max(...volatility) + 1).toFixed(0) ,
+                        maxTicksLimit: 5 ,
                         padding: 10,
                         // Include a dollar sign in the ticks
                         callback: function (value, index, values) {
@@ -153,6 +153,7 @@ var average_volatility = getStandardDeviation(close_log) * 100
 
 // 記錄發生異常後幾日波動
 var volatility = []
+
 
 //// 記錄發生異常日
 var volatility_date = []
