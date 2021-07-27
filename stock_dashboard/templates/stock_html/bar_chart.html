@@ -1,12 +1,25 @@
 {% extends "stock_html/line_chart.html" %}
 
 {% block bar_chart%}
+<div class="dropdown show mb-3 ">
+    <a class="btn dropdown-toggle btn-secondary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+        異常發生後{{ date_after }}日
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        {% for i in range(5,35,5) %}
+            <a class="dropdown-item"  value = {{ i }}  >後{{ i }}日</a>
+        {% endfor %}
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-xl-12 col-lg-7">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">異常發生後報酬波動率</h6>
+                <h6 class="m-0 font-weight-bold text-primary" id="barchart_title">異常發生{{ date_after }}日後報酬波動率</h6>
             </div>
             <div class="card-body">
                 <div class="chart-bar">

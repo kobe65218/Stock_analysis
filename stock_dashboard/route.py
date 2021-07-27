@@ -17,12 +17,18 @@ def stock():
     # 股票代號
     stock_id = request.values.get("stock_id")
 
+    #
+    date_after = request.values.get('date_after')
+
     # 設定預設值
     if start == None :
         start = "2021-04-20"
         end = "2021-07-20"
     if stock_id == None :
        stock_id = "2330"
+
+    if date_after == None:
+        date_after = 5
 
     # 透過api獲取股價資料
     stock = yf.Ticker(f'{stock_id}.TW')
@@ -42,7 +48,7 @@ def stock():
     merge_df["Close_log"] = merge_df["Close"].shift(1)
     merge_df["Close_log"] = (merge_df["Close_log"] - merge_df["Close"]) / merge_df["Close"]
 
-    return render_template("stock_html/bar_chart.html", data =json.dumps(merge_df.to_dict()), start =start, end = end, stock_id = stock_id)
+    return render_template("stock_html/bar_chart.html", data =json.dumps(merge_df.to_dict()), start =start, end = end, stock_id = stock_id , date_after = date_after )
 
 # 建立訓練模型時的api
 @app.route('/branchApi/<stock_id>')
