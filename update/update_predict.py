@@ -42,30 +42,32 @@ def load_update_time(db ,coll ,stock_id):
 
 stock_id_list =  ["2330" ,"2603","2609","3481","2303","2409","2317","2002"]
 
-def update_model_predict(stock_id_list=stock_id_list):
-    for stock_id in stock_id_list:
-        # 讀取模型
-        model = load_model_dd("stock_analysis", "model", stock_id)
+def update_model_predict(stock_id):
+    # 讀取模型
+    model = load_model_dd("stock_analysis", "model", stock_id)
 
-        # save_time_to_mongodb("mongodb://kobe:kobe910018@localhost:27017/"  , "test" , "time" ,"2021-07-24" , "2330")
-        # 讀取上次更新的時間
-        last_update_time = load_update_time("stock_analysis", "time", stock_id)
+    # save_time_to_mongodb("mongodb://kobe:kobe910018@localhost:27017/"  , "test" , "time" ,"2021-07-24" , "2330")
 
-        # 現在時間
-        current_time = datetime.date.today()
+    # 讀取上次更新的時間
+    update_time_plus = datetime.datetime.strptime(load_update_time("stock_analysis", "time", stock_id),
+                                                  "%Y-%m-%d") + datetime.timedelta(1)
 
-        # 從api讀取預更新模型預測的變數(從現在到上次更新的期間資料)
-        predict_data = requests.get(
-            f"http://192.168.31.20:5000/update/stock_id={stock_id}&start={last_update_time}&end={current_time}")
-        print(predict_data)
+    last_update_time = update_time_plus.date()
 
-        # 如果沒有資料為休市日則break
-        if predict_data.text == "None":
-            # 更新上次更新時間
-            print(predict_data.text)
-            update_time_to_mongodb("stock_analysis", "time", str(current_time), stock_id)
-            break
+    # 現在時間
+    current_time = datetime.date.today()
 
+    # 從api讀取預更新模型預測的變數(從現在到上次更新的期間資料)
+    predict_data = requests.get(
+        f"http://192.168.31.20:5000/update/stock_id={stock_id}&start={last_update_time}&end={current_time}")
+    print(predict_data)
+
+    # 如果沒有資料為休市日則break
+    if predict_data.text == "None":
+        # 更新上次更新時間
+        print(predict_data.text)
+        update_time_to_mongodb("stock_analysis", "time", str(current_time), stock_id)
+    else:
         predict_data = json.loads(predict_data.text)
 
         predict_data = pd.DataFrame(predict_data)
@@ -87,8 +89,16 @@ def update_model_predict(stock_id_list=stock_id_list):
         db.session.commit()
 
         # 更新上次更新時間
-        update_time_to_mongodb("stock_analysis", "time", current_time, stock_id)
+        update_time_to_mongodb("stock_analysis", "time", str(current_time), stock_id)
 
+def run_predcit(stock_id_list =stock_id_list):
+    for stock_id in stock_id_list:
+        update_model_predict(stock_id)
+
+if __name__ == "__main__":
+    # run_predcit(stock_id_list)
+    for  i in stock_id_list:
+        save_time_to_mongodb("stock_analysis","time","2021-07-22" ,i)
 
 
 

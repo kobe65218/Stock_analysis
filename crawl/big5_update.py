@@ -10,7 +10,6 @@ import datetime
 from datetime import timedelta
 from sqlalchemy import create_engine , text ,MetaData
 
-
 #%%
 
 username = "root"
@@ -35,7 +34,7 @@ def fetch_data (date_range):
                 df = pd.read_html(url)
                 print(df)
             except:
-                with open("log/big3_erro.csv", mode="a", newline="") as f:
+                with open("crawl/log/big3_erro.csv", mode="a", newline="") as f:
                     writer = csv.writer(f)
                     writer.writerow([date])
                 continue
@@ -43,7 +42,7 @@ def fetch_data (date_range):
             df2 = feature_change(df2, date)
             print(df2)
             df2.to_sql("big3", con=engine, if_exists="append")
-            with open("log/big3_check.csv", mode="w", newline="") as f:
+            with open("crawl/log/big3_check.csv", mode="w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(["date"])
                 writer.writerow([date])
@@ -65,6 +64,8 @@ def feature_change(df ,date):
     df["外資買賣超股數"] = df["外資賣出股數"].fillna(df["外資自營商買賣超股數"] + df["外陸資買賣超股數(不含外資自營商)"])
     df["自營商買進股數"] = df["自營商買進股數"].fillna(df["自營商買進股數(避險)"] + df["自營商買進股數(自行買賣)"])
     df["自營商賣出股數"] = df["自營商賣出股數"].fillna(df["自營商賣出股數(避險)"] + df["自營商賣出股數(自行買賣)"])
+    df["stock_id"] = df["證券代號"]
+    df.drop("證券代號",axis= 1,inplace=True)
     df.sort_index(axis=1, inplace=True)
     return df
 
