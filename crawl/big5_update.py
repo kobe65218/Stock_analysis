@@ -14,7 +14,7 @@ from sqlalchemy import create_engine , text ,MetaData
 
 username = "root"
 password = "kobe910018"
-host = "0.0.0.0"
+host = "mysql"
 port = "3306"
 database = "stock_analysis"
 engine = create_engine(f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}', echo=False)
