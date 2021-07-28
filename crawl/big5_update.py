@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0,"/home/kobe/PycharmProjects/stock_analysis")
+sys.path.insert(0,"/opt/airflow/")
 import time
 import numpy as np
 import pandas as pd

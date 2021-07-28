@@ -1,0 +1,12 @@
+numpy
+pandas
+Flask
+Flask-SQLAlchemy
+flask_cors
+requests
+sqlalchemy
+yfinance
+sklearn
+pymongo
+pymysql
+cryptography
