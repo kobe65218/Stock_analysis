@@ -24,7 +24,7 @@ default_args = {
 stock_id_list =  ["2330" ,"2603","2609","3481","2303","2409","2317","2002"]
 
 
-with DAG('stock_dag', start_date= datetime(2021, 7, 26 , tzinfo=local_tz), schedule_interval="58 23 * * *", tags=["stock"] ) as dag:
+with DAG('stock_dag', start_date= datetime(2021, 7, 29 , tzinfo=local_tz), schedule_interval="00 17 * * *", tags=["stock"] ) as dag:
     crawl_web = PythonOperator(
         task_id='crawl_web',
         python_callable=run_crawl,
