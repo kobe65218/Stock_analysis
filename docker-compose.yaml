@@ -45,7 +45,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /home/kobe/PycharmProjects/stock_analysis/stock_dashboard:/stock/stock_dashboard
+      - ./stock_dashboard:/stock/stock_dashboard
     links:
       - mysql
     command: "python3 run.py"
