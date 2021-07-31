@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'echo "H1666623"'
+                sh 'echo "H166"'
             }
         }
     }
