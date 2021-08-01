@@ -12,16 +12,18 @@
 #      shell: pwd
 #      register: message
 #
-#    # task 2
-#    - name: print debug message
-#      debug:
-#        msg: "{{ message }}"
-
+    # task 2
+    - name: git pull
+      git:
+        repo: "https://github.com/kobe65218/Stock_analysis.git"
+        dest: /home/ubuntu/Stock_analysis
+        update: yes
+        version: docker
 
     - name: Down container
       become: True
       shell:
-          chdir: "/home/ubuntu/Stock_analysis"
+          chdir: /home/ubuntu/Stock_analysis
           cmd: docker --version
       register: message
 
