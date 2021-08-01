@@ -10,7 +10,8 @@ pipeline {
 
         stage('test') {
             steps {
-                sh 'pwd'
+                git 'https://github.com/kobe65218/Stock_analysis.git'
+                sh 'ls -l'
             }
         }
 
