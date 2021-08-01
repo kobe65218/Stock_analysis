@@ -24,14 +24,19 @@
       become: True
       shell:
           chdir: /home/ec2-user/Stock_analysis
-          cmd: docker --version
+          cmd: docker-compose down
       register: message
 
+    - name: up container
+      become: True
+      shell:
+        cmd: docker-compose up stock_dashboard
+        chdir: /home/ec2-user/Stock_analysis
 
-    # task 2
-    - name: print debug message
-      debug:
-        msg: "{{ message }}"
+#    # task 2
+#    - name: print debug message
+#      debug:
+#        msg: "{{ message }}"
 
 
 #    - name: git pull
