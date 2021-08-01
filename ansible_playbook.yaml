@@ -5,14 +5,34 @@
 #        user: "{{ ansible_user }}"
 #        state: present
 #        key: "{{ lookup('file', '{{ ansible_ssh_private_key_file }}') }}"
-    # task 1
-    - name: test connection
-      args:
-        chdir: "/home/ubuntu/Stock_analysis"
-      shell: pwd
-      register: message
+#    # task 1
+#    - name: test connection
+#      args:
+#        chdir: "/home/ubuntu/Stock_analysis"
+#      shell: pwd
+#      register: message
+#
+#    # task 2
+#    - name: print debug message
+#      debug:
+#        msg: "{{ message }}"
 
-    # task 2
-    - name: print debug message
-      debug:
-        msg: "{{ message }}"
+
+    - name: Down container
+      become: True
+      shell:
+          cmd: "docker-compose down "
+          chdir: "/home/ubuntu/Stock_analysis"
+
+    - name: git pull
+      become: True
+      shell:
+        cmd: "git pull"
+        chdir: "/home/ubuntu/Stock_analysis"
+
+
+    - name: up container
+      become: True
+      shell:
+        cmd: "docker-compose up stock_dashboard"
+        chdir: "/home/ubuntu/Stock_analysis"
