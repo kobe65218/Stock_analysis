@@ -28,8 +28,8 @@
       register: message
 
     - name: init airflow
-        become: True
-        shell:
+      become: True
+      shell:
           cmd: docker-compose up airflow-init
           chdir: /home/ec2-user/Stock_analysis
 
