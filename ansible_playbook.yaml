@@ -7,6 +7,8 @@
 #        key: "{{ lookup('file', '{{ ansible_ssh_private_key_file }}') }}"
     # task 1
     - name: test connection
+      args:
+        chdir: "{{ dir }}/Stock_analysis"
       shell: pwd
       register: message
 
