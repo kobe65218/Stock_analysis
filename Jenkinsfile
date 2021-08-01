@@ -16,7 +16,6 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     disableHostKeyChecking: true,
-                    credentialsId: 'aws_cd',
                     playbook: 'ansible_playbook.yaml',
                     inventory: '../host'
                     )
