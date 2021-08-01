@@ -21,18 +21,26 @@
     - name: Down container
       become: True
       shell:
-          cmd: "docker-compose down "
+          cmd: "docker-compose --version"
           chdir: "/home/ubuntu/Stock_analysis"
-
-    - name: git pull
-      become: True
-      shell:
-        cmd: "git pull"
-        chdir: "/home/ubuntu/Stock_analysis"
+      register: message
 
 
-    - name: up container
-      become: True
-      shell:
-        cmd: "docker-compose up stock_dashboard"
-        chdir: "/home/ubuntu/Stock_analysis"
+    # task 2
+    - name: print debug message
+      debug:
+        msg: "{{ message }}"
+
+
+#    - name: git pull
+#      become: True
+#      shell:
+#        cmd: "git pull"
+#        chdir: "/home/ubuntu/Stock_analysis"
+#
+#
+#    - name: up container
+#      become: True
+#      shell:
+#        cmd: "docker-compose up stock_dashboard"
+#        chdir: "/home/ubuntu/Stock_analysis"
