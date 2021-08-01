@@ -30,8 +30,12 @@
     - name: init airflow
       become: True
       shell:
-          cmd: mkdir ./logs ./plugins && echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env && docker-compose up airflow-init
-          chdir: /home/ec2-user/Stock_analysis
+        chdir: /home/ec2-user/Stock_analysis
+        file:
+          path: ./logs ./plugins
+          cmd: echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
+        cmd: docker-compose up airflow-init
+
 
     - name: up container
       become: True
