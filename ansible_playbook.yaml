@@ -28,12 +28,6 @@
       register: message
 
 
-    - name : make file
-      become: True
-      shell:
-        chdir: /home/ec2-user/Stock_analysis
-        cmd: mkdir ./logs ./plugins
-
     - name: set env
       become: True
       shell:
