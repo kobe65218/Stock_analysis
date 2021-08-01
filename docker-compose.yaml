@@ -1,4 +1,5 @@
 version: '3'
+
 x-airflow-common:
   &airflow-common
   build:
@@ -46,8 +47,8 @@ services:
       - "5000:5000"
     volumes:
       - ./stock_dashboard:/stock/stock_dashboard
-    links:
-      - mysql
+#    links:
+#      - mysql
     command: "python3 run.py"
 
   mysql:
