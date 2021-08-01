@@ -22,7 +22,7 @@
       become: True
       shell:
           chdir: "/home/ubuntu/Stock_analysis"
-          cmd: docker --version
+          cmd: docker-compose --version
       register: message
 
 
