@@ -16,14 +16,14 @@
     - name: git pull
       git:
         repo: "https://github.com/kobe65218/Stock_analysis.git"
-        dest: /home/ubuntu/Stock_analysis
+        dest: /home/ec2-user/Stock_analysis
         update: yes
         version: docker
 
     - name: Down container
       become: True
       shell:
-          chdir: /home/ubuntu/Stock_analysis
+          chdir: /home/ec2-user/Stock_analysis
           cmd: docker --version
       register: message
 
