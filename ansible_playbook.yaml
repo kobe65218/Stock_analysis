@@ -8,3 +8,9 @@
     # task 1
     - name: test connection
       shell: pwd
+      register: message
+
+    # task 2
+    - name: print debug message
+      debug:
+        msg: "{{ message }}"
