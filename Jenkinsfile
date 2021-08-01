@@ -11,7 +11,7 @@ pipeline {
         stage('test') {
             steps {
                 deleteDir()
-                git branch: "stock", url: "https://github.com/kobe65218/Stock_analysis.git"
+                git branch: "docker", url: "https://github.com/kobe65218/Stock_analysis.git"
                 sh 'ls -l'
             }
         }
