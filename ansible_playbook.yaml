@@ -8,7 +8,7 @@
     # task 1
     - name: test connection
       args:
-        chdir: "$pwd/Stock_analysis"
+        chdir: "/home/ubuntu/Stock_analysis"
       shell: pwd
       register: message
 
