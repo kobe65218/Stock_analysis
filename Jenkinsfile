@@ -8,7 +8,7 @@ pipeline {
                 deleteDir()
                 git branch: "docker", url: "https://github.com/kobe65218/Stock_analysis.git"
                 sh 'ls -l'
-                sh 'echo 12'
+                sh 'echo 12efe'
             }
         }
 
