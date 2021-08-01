@@ -21,7 +21,7 @@
     - name: Down container
       become: True
       shell:
-          chdir: "/home/ubuntu/Stock_analysis"
+          chdir: "/home/ec2-user/Stock_analysis"
           cmd: docker-compose --version
       register: message
 
