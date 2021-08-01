@@ -8,7 +8,7 @@
     # task 1
     - name: test connection
       args:
-        chdir: "{{ dir }}/Stock_analysis"
+        chdir: "$pwd/Stock_analysis"
       shell: pwd
       register: message
 
