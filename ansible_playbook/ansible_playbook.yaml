@@ -1,5 +1,16 @@
 - hosts: gwc
+  become: True
+
   tasks:
+    - name: check docker is installed
+      shell: docker --version
+      ignore_errors: True
+      register: check_docker
+      failed_when: check_docker.rc == 0
+
+    - roles:
+      - { role: docker , become: yes }
+      when: check_docker.rc == 0
 
     - name: git pull
       git:
@@ -11,8 +22,8 @@
     - name: Down container
       become: True
       shell:
-          chdir: /home/kobe655218/Stock_analysis
-          cmd: docker-compose down
+        chdir: /home/kobe655218/Stock_analysis
+        cmd: docker-compose down
       register: message
 
 

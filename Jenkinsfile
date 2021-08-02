@@ -17,7 +17,7 @@ pipeline {
                 ansiblePlaybook(
                     disableHostKeyChecking: true,
                     credentialsId: 'gwc_cd',
-                    playbook: 'ansible_playbook.yaml',
+                    playbook: 'ansible_playbook/ansible_playbook.yaml',
                     inventory: '../host'
                     )
             }
