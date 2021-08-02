@@ -8,14 +8,21 @@
       register: check_docker
       ignore_errors: True
 
-    - name: print debug message
-      debug:
-        msg: "{{ check_docker.rc }}"
-
     - name: install docker
       include_role:
         name: docker
       when: check_docker.rc != 0
+
+
+    - name: check docker-compose is installed
+      shell: docker-compose --version
+      register: check_docker_compose
+      ignore_errors: True
+
+    - name: install docker-compose
+      include_role:
+        name: docker-compose
+      when: check_docker_compose.rc != 0
 
     - name: git pull
       git:
