@@ -14,7 +14,7 @@
 
     - name: install docker
       include_role:
-        name: docker
+        name: doc
       when: check_docker.rc != 0
 
     - name: git pull
