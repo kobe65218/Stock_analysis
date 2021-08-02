@@ -13,8 +13,8 @@
         msg: "{{ check_docker.rc }}"
 
     - name: install docker
-      include_role:
-        name: docker
+      debug:
+        msg: "{{ check_docker.rc }}"
       when: check_docker.rc == 127
 
     - name: git pull
