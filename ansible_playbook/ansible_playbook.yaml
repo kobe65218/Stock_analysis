@@ -8,8 +8,9 @@
       register: check_docker
       failed_when: check_docker.rc == 0
 
-    - roles:
-      - { role: docker , become: yes }
+    - name: install docker
+      include_role:
+        name: docker
       when: check_docker.rc == 0
 
     - name: git pull
