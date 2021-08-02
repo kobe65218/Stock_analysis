@@ -4,7 +4,6 @@
   tasks:
     - name: check docker is installed
       shell: docker --version
-      ignore_errors: True
       register: check_docker
       failed_when: check_docker.rc == 0
 
