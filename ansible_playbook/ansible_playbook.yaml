@@ -40,12 +40,13 @@
 
 
     - name: set env
-      become: False
+      become: True
       shell:
         chdir: /home/kobe655218/Stock_analysis
         cmd: echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
 
     - name: create a directory, and set the permissions
+      become: True
       file:
         path: "/home/kobe655218/Stock_analysis/{{ item }}"
         state: directory
@@ -54,6 +55,7 @@
       loop:
         - logs
         - plugins
+        - .env
 
 
     - name: init airflow
