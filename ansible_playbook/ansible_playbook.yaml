@@ -8,6 +8,10 @@
       register: check_docker
       failed_when: check_docker.rc == 0
 
+    - name: print debug message
+      debug:
+        msg: "{{ check_docker.rc }}"
+
     - name: install docker
       include_role:
         name: docker
