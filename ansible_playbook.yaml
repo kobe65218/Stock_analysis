@@ -12,7 +12,7 @@
 #      shell: pwd
 #      register: message
 #
-    # task
+    # tas
     - name: git pull
       git:
         repo: "https://github.com/kobe65218/Stock_analysis.git"
