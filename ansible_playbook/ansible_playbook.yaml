@@ -13,9 +13,9 @@
         msg: "{{ check_docker.rc }}"
 
     - name: install docker
-      debug:
-        msg: "{{ check_docker.rc }}"
-      when: check_docker.rc == 127
+      include_role:
+        name: docker
+      when: check_docker.rc != 0
 
     - name: git pull
       git:
