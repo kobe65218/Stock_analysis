@@ -5,6 +5,7 @@
     - name: check docker is installed
       shell: docker --version
       register: check_docker
+      ignore_errors: True
 
     - name: print debug message
       debug:
