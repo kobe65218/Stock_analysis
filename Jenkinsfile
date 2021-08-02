@@ -2,16 +2,15 @@
 pipeline {
     agent any
     stages {
-
-        stage('new code') {
+        // pull ansible_playbook
+        stage('pull new code') {
             steps {
                 deleteDir()
                 git branch: "docker", url: "https://github.com/kobe65218/Stock_analysis.git"
-                sh 'ls -l'
-                sh 'echo 12555ee'
             }
         }
 
+        // 執行 ansible_playbook
         stage('deploy') {
             steps {
                 ansiblePlaybook(

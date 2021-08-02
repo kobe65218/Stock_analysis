@@ -47,30 +47,9 @@ services:
       - "5000:5000"
     volumes:
       - ./stock_dashboard:/stock/stock_dashboard
-#    links:
-#      - mysql
     command: "python3 run.py"
 
-#  mysql:
-#    image: mysql
-#    restart: always
-#    ports:
-#      - "3306:3306"
-#    volumes:
-#      - /home/kobe/Documents/database:/var/lib/mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: kobe910018
-#
-#  mongodb:
-#    image: mongo
-#    restart: always
-#    ports:
-#      - "27017:27017"
-#    volumes:
-#      - /home/kobe/Documents/mongo_database:/data/db
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: kobe
-#      MONGO_INITDB_ROOT_PASSWORD: kobe910018
+
   postgres:
     image: postgres:13
     environment:

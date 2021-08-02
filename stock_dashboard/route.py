@@ -83,9 +83,6 @@ def update(stock_id ,start ,end):
         for data in Table_data:
             Table_datas.append(data.get_dict())
 
-        print(start)
-        print(end)
-
         # 資料處理
         df = pd.DataFrame(Table_datas)
         df = df.astype(str)
