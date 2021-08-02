@@ -49,7 +49,6 @@
       become: True
       file:
         path: "/home/kobe655218/Stock_analysis/{{ item }}"
-        recurse: yes
         owner: kobe655218
         group: kobe655218
         mode: "777"
