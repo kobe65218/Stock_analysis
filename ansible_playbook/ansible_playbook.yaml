@@ -2,6 +2,7 @@
   become: True
 
   tasks:
+    ## 確認
     - name: check docker is installed
       shell: docker --version
       register: check_docker
