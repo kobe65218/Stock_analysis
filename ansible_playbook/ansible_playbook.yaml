@@ -43,34 +43,34 @@
       register: message
 
 
-#    - name: set env
-#      become: True
-#      shell:
-#        chdir: /home/kobe655218/Stock_analysis
-#        cmd: echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
-#
-#    - name: create a directory, and set the permissions
-#      become: True
-#      file:
-#        path: "/home/kobe655218/Stock_analysis/{{ item }}"
-#        owner: kobe655218
-#        group: kobe655218
-#        mode: "777"
-#      loop:
-#        - logs
-#        - plugins
-#        - .env
+    - name: set env
+      become: True
+      shell:
+        chdir: /home/kobe655218/Stock_analysis
+        cmd: echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
 
-#    # 初始化airflow
-#    - name: init airflow
-#      become: True
-#      shell:
-#        chdir: /home/kobe655218/Stock_analysis
-#        cmd: docker-compose up airflow-init
+    - name: create a directory, and set the permissions
+      become: True
+      file:
+        path: "/home/kobe655218/Stock_analysis/{{ item }}"
+        owner: kobe655218
+        group: kobe655218
+        mode: "777"
+      loop:
+        - logs
+        - plugins
+        - .env
+
+    # 初始化airflow
+    - name: init airflow
+      become: True
+      shell:
+        chdir: /home/kobe655218/Stock_analysis
+        cmd: docker-compose up airflow-init
 
     # 建置airflow以及flask app
     - name: up container
       become: True
       shell:
-        cmd: docker-compose  up -d stock_dashboard
+        cmd: docker-compose  up
         chdir: /home/kobe655218/Stock_analysis

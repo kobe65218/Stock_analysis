@@ -11,20 +11,21 @@ from update.update_predict import  run_predcit
 import pendulum
 
 local_tz = pendulum.timezone("Asia/Taipei")
-
-default_args = {
-    'owner': 'Kobe',
-    'start_date': datetime(2021, 7, 26, 1, 6 , tzinfo=local_tz),
-    'schedule_interval': '@daily',
-    'retries': 2,
-    'retry_delay': timedelta(minutes=1),
-    'tags' : ['stock']
-}
+dt = datetime.now()
+dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+# default_args = {
+#     'owner': 'Kobe',
+#     'start_date': datetime(2021, 7, 26, 1, 6 , tzinfo=local_tz),
+#     'schedule_interval': '@daily',
+#     'retries': 2,
+#     'retry_delay': timedelta(minutes=1),
+#     'tags' : ['stock']
+# }
 
 stock_id_list =  ["2330" ,"2603","2609","3481","2303","2409","2317","2002"]
 
 
-with DAG('stock_dag', start_date= datetime.now(local_tz).date() , schedule_interval="00 19 1-5 * *", tags=["stock"] ) as dag:
+with DAG('stock_dag', start_date= dt.astimezone(local_tz) -timedelta(1) , schedule_interval="50 19 1-5 * *", tags=["stock"] ) as dag:
     crawl_web = PythonOperator(
         task_id='crawl_web',
         python_callable=run_crawl,

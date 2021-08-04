@@ -3,11 +3,15 @@ from airflow.operators.dummy import DummyOperator
 from airflow.operators.python import BranchPythonOperator ,PythonOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
+import pendulum
+
+local_tz = pendulum.timezone("Asia/Taipei")
 args = {
     'owner': 'airflow',
     # 'depends_on_past': True,
 }
-
+dt = datetime.now()
+dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
 
 def should_run(**kwargs):
     print("123")
@@ -16,9 +20,9 @@ def two():
 
 
 with DAG(
-    dag_id='test6',
-    schedule_interval='5 11 * * *',
-    start_date=datetime(2021, 7, 28),
+    dag_id='test10',
+    schedule_interval='37 17 * * *',
+    start_date= dt.astimezone(local_tz) -timedelta(1) ,
     default_args=args,
     tags=['example'],
     concurrency=1000,

@@ -9,7 +9,7 @@ import numpy as np
 import  datetime
 from stock_dashboard.database import TablePredict
 from stock_dashboard import db
-client = "mongodb://kobe:kobe910018@mongodb:27017/"
+client = "mongodb://kobe:kobe910018@kobe655218.ddns.net:27017/"
 conn = pymongo.MongoClient(client)
 # 從mongodb 讀取模型
 def load_model_dd(db ,coll,stock_id):
