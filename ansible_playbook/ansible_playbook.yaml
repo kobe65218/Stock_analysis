@@ -61,12 +61,12 @@
         - plugins
         - .env
 
-#    # 初始化airflow
-#    - name: init airflow
-#      become: True
-#      shell:
-#        chdir: /home/kobe655218/Stock_analysis
-#        cmd: docker-compose up airflow-init
+    # 初始化airflow
+    - name: init airflow
+      become: True
+      shell:
+        chdir: /home/kobe655218/Stock_analysis
+        cmd: docker-compose up airflow-init
 
     # 建置airflow以及flask app
     - name: up container
