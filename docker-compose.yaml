@@ -59,7 +59,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./:/var/lib/postgresql/data
+      - .:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
