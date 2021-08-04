@@ -51,13 +51,14 @@
 
     - name: create a directory, and set the permissions
       become: True
+      ignore_errors: True
       file:
         path: "/home/kobe655218/Stock_analysis/{{ item }}"
         state: directory
         owner: kobe655218
         group: kobe655218
         mode: "777"
-        ignore_errors: True
+
 
       loop:
         - logs
