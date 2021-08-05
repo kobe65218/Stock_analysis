@@ -1,7 +1,7 @@
 import datetime
 
 from stock_dashboard import app , db
-from flask import render_template , request
+from flask import render_template , request , url_for
 import pandas as pd
 import yfinance as yf
 import json
