@@ -5,4 +5,4 @@
 * 透過airflow將爬取資料及丟入模型預測，自動化排程成例行pipline
 * 以flask為框架呈現dashboard
 * 開發過程以jenkins及Ansible實現專案自動化整合以及部署至gcp
-* 目前架設於gcp : <http://34.81.62.62:5000/>
+* 目前架設於gcp : <http://34.125.113.104:5000/>
