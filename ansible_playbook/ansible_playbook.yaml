@@ -85,5 +85,5 @@
     - name: up container
       become: True
       shell:
-        cmd: docker-compose up stock_dashboard
+        cmd: docker-compose up -d stock_dashboard
         chdir: /home/kobe655218/Stock_analysis
